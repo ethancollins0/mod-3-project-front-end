@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="semantic-ui-header.css">
+    </head>
+    <body>
+        <div class="ui menu">
+            <div class="header item">Hobby Hub</div>
+                <a class="item navbutton" id='navbar-favorites'>Favorites</a>
+                <a class="item navbutton" id='navbar-books'>Books</a>
+                <a class="item navbutton" id='navbar-movies'>Movies</a>
+                <a class="item navbutton" id='navbar-games'>Games</a>
+                <a class="item navbutton" id='navbar-sports'>Sports</a>
+                <a class="item navbutton" id='navbar-songs'>Songs</a>
+                <a class="item navbutton" id='navbar-shows'>TV Shows</a>
+                <a class="right item" id='logout'>Log Out</a>
+            
+        </div>
+
+        <div id='registration-page' class='logged-out'>
+        <h1>Registration</h1>
+        <form id='registration-form'>
+            <div>
+                <label for="name">Name</label>
+                <input type="text" name="name" class="register_input" required>
+            </div>
+            <div>
+                <label for="username">Username</label>
+                <input type="text" name="username" class="register_input" required>
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <input type="text" name="password" class="register_input" required>
+            </div>
+            <button type="submit" id="register">Register</button>
+        </form>
+        <a href='' id='login-redirect'>Login</a>
+    </div>
+
+    <div id='login-page' class='logged-out'>
+        <form id='login-form'>
+            <div>
+                <label for="username">Username</label>
+                <input type="text" class="login-input" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="text" class="login-input" required>
+            </div>
+            <button type="submit" id="login">Login</button>
+        </form>
+        <p>New to the site? <a href='' id='signup-redirect'>Sign Up!</a></p>
+    </div>
+
+    <div id='favorites-page' class='page'>This is the Favorites Page</div>
+    <div id='books-page' class='page'>This is the Books Page</div>
+    <div id='movies-page' class='page'>This is the Movies Page</div>
+    <div id='games-page' class='page'>This is the Games Page</div>
+    <div id='sports-page' class='page'>This is the Sports Page</div>
+    <div id='songs-page' class='page'>This is the Songs Page</div>
+    <div id='tvshows-page' class='page'>This is the TV Shows Page</div>
+
+
+
+
+
+
+
+
+        <script src="app.js"></script>
+    </body>
+</html>
