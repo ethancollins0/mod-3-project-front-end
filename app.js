@@ -4,6 +4,20 @@ const loginUrl = 'http://localhost:5000/login'
 document.addEventListener('DOMContentLoaded', () => {
     logoutPage()
     createEventListeners()
+    document.querySelectorAll('.message')[0].querySelector('a').addEventListener('click', (function(){
+        console.log('got to first')
+        const forms = document.querySelectorAll('form')
+        forms[0].style.display = 'none'
+        forms[1].style.display = 'inline'
+     }));
+
+     document.querySelectorAll('.message')[1].querySelector('a').addEventListener('click', (function(){
+        console.log('got to second')
+        const forms = document.querySelectorAll('form')
+
+        forms[1].style.display = 'none'
+        forms[0].style.display = 'inline' 
+     }));
 })
 
 function initializeNavbar(){
@@ -32,7 +46,7 @@ function changePage(page){
 
 
 function testRegistrationInputs(){
-    const inputArray = Array.from(document.getElementsByClassName('register_input'))
+    const inputArray = Array.from(document.getElementsByClassName('register-input'))
     let bool = true
     inputArray.map(input => {
         if (input.value.trim().length <= 0){
@@ -79,12 +93,21 @@ function login(userInfo){
         console.log('failed')
         return
     }
+    addBooks(userInfo)
 const loggedOutFormsArray = Array.from(document.getElementsByClassName('logged-out'))
     loggedOutFormsArray.forEach(form => {
         form.classList.add('hidden')
     })
-    changePage('favorites')
+    changePage('books')
     initializeNavbar()
+}
+
+function addBooks(booksArray){
+    booksArray.forEach(book => {
+        const p = document.createElement('p')
+        p.innerText = book.title
+        document.body.appendChild(p)
+    })
 }
 
 function register(inputs){
@@ -107,40 +130,26 @@ function register(inputs){
 
 function registerSuccess(response){
     if (response.includes("Congrats")) {
-        document.getElementById('login-redirect').click()
+        window.location.reload()
     }
 }
 
 function rejectInput(){
-    alert('One or more inputs are invalid or empty, make sure there are no empty textfields.')
+    console.log('failed')
 }
 
 function createEventListeners(){
-    const signupRedirect = document.getElementById('signup-redirect')
-    signupRedirect.addEventListener('click', (event) => { 
-        event.preventDefault()
-        logoutPage()
-        document.getElementById('login-page').classList.add('hidden')
-        document.getElementById('registration-page').classList.remove('hidden')
-    })
 
-    const loginRedirect = document.getElementById('login-redirect')
-    loginRedirect.addEventListener('click', (event) => {
-        event.preventDefault()
-        logoutPage()
-    })
-
-    const registerButton = document.getElementById('register')
-    registerButton.addEventListener('click', (event) => {
-        event.preventDefault()
+    const signupButton = document.getElementById('signup-button')
+    signupButton.addEventListener('click', (event) => {
         testRegistrationInputs()
     })
 
-    const loginButton = document.getElementById('login')
+    const loginButton = document.getElementById('login-button')
     loginButton.addEventListener('click', (event) => {
-        event.preventDefault()
         testLoginInputs()
     })
+ 
 
     const logoutButton = document.getElementById('logout')
     logoutButton.addEventListener('click', () => {
@@ -148,4 +157,3 @@ function createEventListeners(){
         window.location.reload()
     })
 }
-
