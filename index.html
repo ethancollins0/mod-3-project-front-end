@@ -11,13 +11,10 @@
     </head>
     <body>
         <div class="ui menu">
-            <div class="header item">Hobby Hub</div>
-                <a class="item navbutton" id='navbar-books'>Books</a>
-                <a class="item navbutton" id='navbar-movies'>Movies</a>
-                <a class="item navbutton" id='navbar-games'>Games</a>
-                <a class="item navbutton" id='navbar-sports'>Sports</a>
-                <a class="item navbutton" id='navbar-songs'>Songs</a>
-                <a class="item navbutton" id='navbar-shows'>TV Shows</a>
+            <div class="header item">GE Tracker</div>
+                <a class="item navbutton" id='navbar-topitems'>Top Items</a>
+                <a class="item navbutton" id='navbar-trackeditems'>Tracked Items</a>
+                <a class='item navbutton' id='navbar-randomitem'>Random Item</a>
 
                 <div class='item'>
                     <input type="textfield" id='searchbar-textfield'class='search item searchbar' placeholder="Search..." name='searchbar'>
@@ -53,30 +50,33 @@
         </div>
     </div>
 
-
-
-    <div id='books-page' class='page'>
-        <h1>This is the books page</h1>
-        
-        
+    <div id='top-items-page' class='page'>
         
     </div>
     
+    <div id='tracked-items-page' class='page'>
+        <div id='tracked-list' class='tracked-card-container'>
+        </div>
+    </div>
     
-    
-    
-    
-    
-    
-    
-    
-    <div id='movies-page' class='page'>This is the Movies Page</div>
-    <div id='games-page' class='page'>This is the Games Page</div>
-    <div id='sports-page' class='page'>This is the Sports Page</div>
-    <div id='songs-page' class='page'>This is the Songs Page</div>
-    <div id='tvshows-page' class='page'>This is the TV Shows Page</div>
+    <div id='random-item-page' class='page'>
+        <div id='random-list' class='card-container'>
+            <div class='info-card card'>
+                <img id='random-item-image' style='width:100%' alt='random-item-image''>
+                <h2><b id='random-item-name'></b></h2>
+                <p id='random-item-examine'></p>
+                <br>
+                <p id='cost'></p>
+                <p id='highalch'></p>
+            </div>
+        </div>
+    </div>
 
-
+    <div id='search-item-page' class='page'>
+        <div id = 'search-list' class='card-container'>
+            
+        </div>
+    </div>
 
 
 

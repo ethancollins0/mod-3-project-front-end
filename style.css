@@ -2,6 +2,108 @@
     display: none;
 }
 
+#song-lists {
+    border: 2px dashed#444;
+    width: 100%;
+    text-align: justify;
+    height: auto;
+}
+
+.songs-list {
+    background: white;
+    min-height: 200px;
+    width: auto;
+    min-width: 200px;
+}
+
+.songs-list > p{
+    margin: 0;
+}
+
+.songs-list > p:nth-child(odd){
+    background: lightgrey;
+}
+
+.songs-list > p:nth-child(even){
+    background: lightblue;
+}
+
+#saved-songs {
+    float: left;
+}
+
+#suggested-songs {
+    float: right;
+}
+
+.songs-list h1 {
+    display: inline-block;
+    height: auto;
+    margin: 0;
+    vertical-align: middle;
+    text-align: center;
+    width: 100%;
+    background: grey;
+    min-height: 50px;
+}
+
+.songs-list p {
+    text-align: left;
+    min-height: 30px;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#book-lists {
+    border: 2px dashed#444;
+    width: 100%;
+    text-align: justify;
+    height: auto;
+}
+
+.books-list {
+    background: white;
+    min-height: 200px;
+    width: 25%;
+    min-width: 150px;
+}
+
+#saved-books {
+    float: left;
+}
+
+#suggested-books {
+    float: right;
+}
+
+.books-list h1 {
+    display: inline-block;
+    height: auto;
+    margin: 0;
+    vertical-align: middle;
+    text-align: center;
+    width: 100%;
+    background: grey;
+    min-height: 50px;
+}
+
+.books-list p {
+    text-align: left;
+    margin: 10px;
+}
+
+
 #searchbutton {
     height: 100%;
 }
@@ -109,4 +211,54 @@ body {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
+}
+
+.card {
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    min-width: 200px;
+    max-width: 250px;
+    background: white;
+    border-radius: 5px;
+    padding: 2px 16px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.card-container {
+    padding: 2px 16px;
+    display: table-cell;
+}
+
+#random-list {
+    text-align: center;
+}
+
+.tracked-card-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tracked-item-card {
+    flex: 1;
+    width: 0;
+    box-sizing: border-box;
+    margin: 1rem .25em;
+    padding: 1em;
+}
+
+@media screen and (min-width: 40em) {
+    .tracked-item-card {
+       max-width: calc(50% -  1em);
+    }
+}
+ 
+@media screen and (min-width: 60em) {
+    .tracked-item-card {
+        max-width: calc(25% - 1em);
+    }
 }
