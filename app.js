@@ -1,8 +1,13 @@
 const registrationUrl = 'http://localhost:5000/register'
 const loginUrl = 'http://localhost:5000/login'
 const randomUrl = 'http://localhost:5000/item/random'
+const priceUrl = 'http://localhost:5000/item/price/'
+const updateUrl = 'http://localhost:5000/item/update'
+const deleteUrl = 'http://localhost:5000/item/delete'
+const saveUrl = 'http://localhost:5000/item/save'
+let toggle = true
 
-let randomItem = {url: '', name: '', cost: 0, highalch: 0, examine: ''}
+let randomItem = {url: '', name: '', cost: 0, highalch: 0, examine: '', db_id: 0}
 let currentPage = 'tracked-items'
 let $username = ''
 
@@ -10,8 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutPage()
     createEventListeners()
     loadRandomItem()
-    //attemptLogin([{value: 'username'}, {value: 'password'}])
-
+    addRandomToDom()
+    attemptLogin([{value: 'username'}, {value: 'password'}])
+    addTrackedItems()
     document.querySelectorAll('.message')[0].querySelector('a').addEventListener('click', (function(){
         console.log('got to first')
         const forms = document.querySelectorAll('form')
@@ -62,25 +68,43 @@ function loadRandomItem(){
     fetch(randomUrl)
         .then(resp => resp.json())
         .then(item => {
+            randomItem.url = item.image_url
+
+            let randomImages = document.getElementById('random-list').querySelectorAll('img')
+
+            toggle == true
+                ? randomImages[0].src = item.image_url
+                : randomImages[1].src = item.image_url
+
             randomItem.name = item.name
             randomItem.cost = item.cost
             randomItem.examine = item.examine
             randomItem.highalch = item.highalch
-            fetch(`https://www.ge-tracker.com/assets/images/icons/${item.id}.gif`)
-                .then(resp => {
-                    randomItem.url = resp.url
-                })
+            randomItem.id = item.id
         })
 }
 
-function addRandomToDom(item){ //.id .name .cost
+function addRandomToDom(){ //.id .name .cost
     let info_card = document.getElementById('random-list')
-    info_card.querySelector('img').src = randomItem.url
-    info_card.querySelector('img').alt = randomItem.name
+    let randomImages = document.getElementById('random-list').querySelectorAll('img')
+
+    if (toggle == true){
+        randomImages[1].style.display = 'none'
+        randomImages[0].style.display = 'block'
+    } else {
+        randomImages[0].style.display = 'none'
+        randomImages[1].style.display = 'block'
+    }
+
+    toggle == true
+    ? toggle = false
+    : toggle = true
+    
     info_card.querySelector('b').textContent = randomItem.name
     info_card.querySelector('p').textContent = randomItem.examine
     info_card.querySelector('#cost').textContent = `Store Cost: ${randomItem.cost} gp`
     info_card.querySelector('#highalch').textContent = `High Alch Value: ${randomItem.highalch} gp`
+    info_card.querySelector('button').dataset['id'] = randomItem.id
     loadRandomItem()
 }
 
@@ -113,6 +137,31 @@ function testLoginInputs(){
         : rejectInput()
 }
 
+function saveItem(id){
+    let username = $username
+    let item_id = id
+    fetch(saveUrl, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            id: item_id
+        })
+    }).then(resp => resp.json())
+    .then((item) => {
+        let array = []
+        array.push(item)
+        addTrackedItems(array)
+    })
+    .then(() => {
+        loadRandomItem()
+        addRandomToDom()
+    })
+}
+
 function attemptLogin(inputs){
     fetch(loginUrl, {
         method: 'POST',
@@ -134,48 +183,52 @@ function login(userInfo, username){
         return
     }
     $username = username
-    addTrackedItems(userInfo)
 const loggedOutFormsArray = Array.from(document.getElementsByClassName('logged-out'))
     loggedOutFormsArray.forEach(form => {
         form.classList.add('hidden')
     })
     changePage('Tracked Items')
     initializeNavbar()
-}
-
-function findUrl(item_id){
-    return `https://www.ge-tracker.com/assets/images/icons/${item_id}.gif`
+    addTrackedItems(userInfo)
 }
 
 function addTrackedItems(items){
-    console.log(items)
     let list = document.getElementById('tracked-list')
-    items.forEach(item => {
-        let url = `https://www.ge-tracker.com/assets/images/icons/${item.id}.gif`
+    let divArray = []
+items.forEach(item => {
         let div = document.createElement('div')
-        div.innerHTML = `
-        <div data-url=${item.wiki_url} class='tracked-item-card card'>
-        <img data-url=${item.wiki_url} class='tracked-item-image' style='width:100%' alt='${item.name}' src=${url}>
-        <h4 data-url=${item.wiki_url}><b class='tracked-item-name'>${item.name}</b></h4>
+        div.classList = 'tracked-item-card card'
+        div.dataset['url'] = item.wiki_url
+        div.innerHTML = `<img data-url=${item.wiki_url} class='tracked-item-image' style='width:100%' alt='${item.name}' src='${item.image_url}'>
+        <h2 data-url=${item.wiki_url}><b class='tracked-item-name'>${item.name}</b></h2>
         <p data-url=${item.wiki_url} class='tracked-item-examine'>${item.examine}</p>
         <br>
-        <p data-url=${item.wiki_url} class='tracked-item-costcost'>Store Price: ${item.cost} gp</p>
-        <p data-url=${item.wiki_url} class='tracked-item-highalch'>High Alch Value: ${item.highalch} gp</p>
-    </div>
+        <p data-url=${item.wiki_url} class='tracked-item-cost'>Store Price: ${item.cost} gp</p>
+        <p data-url=${item.wiki_url} class='tracked-item-highalch'>Highalch Value: ${item.highalch} gp</p>
+        <p data-url=${item.wiki_url} class='tracked-item-current-price'>GE Price: ${item.updated_price} gp</p>
+        <button data-itemid=${item.db_id} class='update-button'>Update GE Price</button>
+        <button data-itemid=${item.db_id} class='delete-button'>Stop Tracking</button>
         `
         list.appendChild(div)
-    })
-
+        divArray.push(div)
+    })    
 }
 
-{/* <div class='info-card card'>
-                <img id='random-item-image' style='width:100%' alt='random-item-image''>
-                <h2><b id='random-item-name'></b></h2>
-                <p id='random-item-examine'></p>
-                <br>
-                <p id='cost'></p>
-                <p id='highalch'></p>
-            </div> */}
+// function updateTrackedItemPrices(items, divArray){
+//     items.forEach((item, index) => {
+//             fetch(priceUrl, {
+//                 method: "POST",
+//                 headers: {
+//                     "Content-Type": "application/json"
+//                 },
+//                 body: JSON.stringify({name: item.name, num: index})
+//             }).then(resp => resp.json())
+//             .then(price => {
+//                 divArray[index].querySelector('.tracked-item-current-price').textContent = `GE Price: ${price} gp`
+//                 console.log(`updated ${item.name} with ge price: ${price}`)
+//             })
+//     })
+// }
 
 function register(inputs){
     fetch(registrationUrl, {
@@ -224,11 +277,55 @@ function createEventListeners(){
         window.location.reload()
     })
 
+    document.getElementById('tracked-list').addEventListener('click' ,(event) => {
+        if (event.target != document.getElementById('tracked-list')){
+            if (event.target.classList != 'delete-button' && event.target.classList != ('update-button')){
+                window.open(event.target.dataset.url)
+            }
+        }
+    })
+
     document.getElementById('tracked-list').addEventListener('click', (event) => {
-        window.open(event.target.dataset.url)
+        if (event.target.classList == 'delete-button'){
+            fetch(deleteUrl, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    "db_id": event.target.dataset.itemid,
+                    "username": $username
+                })
+            }).then(resp => resp.json())
+            .then(() => {
+                console.log(event.target.parentNode.remove())
+            })
+        }
+    })
+
+    document.getElementById('tracked-list').addEventListener('click', (event) => {
+        if (event.target.classList == 'update-button'){
+            fetch(updateUrl, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    "db_id": event.target.dataset.itemid
+                })
+            }).then(resp => resp.json())
+            .then(json => event.target.parentNode.querySelector('.tracked-item-current-price').textContent = `GE Price: ${json.updated_price} gp`)
+        }
     })
 
     document.getElementById('searchbutton').addEventListener('click', () => {
             changePage('search-items')
+    })
+
+    document.getElementById('random-list').querySelector('button').addEventListener('click', (event) => {
+        event.preventDefault()
+        saveItem(event.target.dataset.id)
     })
 }

@@ -12,7 +12,6 @@
     <body>
         <div class="ui menu">
             <div class="header item">GE Tracker</div>
-                <a class="item navbutton" id='navbar-topitems'>Top Items</a>
                 <a class="item navbutton" id='navbar-trackeditems'>Tracked Items</a>
                 <a class='item navbutton' id='navbar-randomitem'>Random Item</a>
 
@@ -49,10 +48,6 @@
             </div>
         </div>
     </div>
-
-    <div id='top-items-page' class='page'>
-        
-    </div>
     
     <div id='tracked-items-page' class='page'>
         <div id='tracked-list' class='tracked-card-container'>
@@ -62,12 +57,14 @@
     <div id='random-item-page' class='page'>
         <div id='random-list' class='card-container'>
             <div class='info-card card'>
-                <img id='random-item-image' style='width:100%' alt='random-item-image''>
+                <img id='random-item-image first-card-image' style='width:100%' alt='random-item-image''>
+                <img id='random-item-image first-card-image' style='width:100%' alt='random-item-image''>
                 <h2><b id='random-item-name'></b></h2>
                 <p id='random-item-examine'></p>
                 <br>
                 <p id='cost'></p>
                 <p id='highalch'></p>
+                <button>Track Item</button>
             </div>
         </div>
     </div>
